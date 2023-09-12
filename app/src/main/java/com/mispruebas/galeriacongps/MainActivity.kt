@@ -61,42 +61,42 @@ import java.time.LocalDateTime
 import androidx.exifinterface.media.ExifInterface.*
 
 
-enum class Pantalla {
+enum class Pantalla {// aca se agregan las pantallas
     CapturaFoto,
     MiniaturaFoto,
     Ubicacion
 }
 
-class AppVM : ViewModel() {
+class AppVM : ViewModel() {//esto es el viewmodel para la ubicacion
     val latitud = mutableStateOf(0.0)
     val longitud = mutableStateOf(0.0)
     var permisoUbicacionOk: () -> Unit = {}
 }
 
-class AppCameraVM : ViewModel() {
-    val pantallaPrincipal = mutableStateOf(Pantalla.CapturaFoto)
-    val ubicacionFoto = mutableStateOf<Location?>(null)
-    var onPermisoCamara: () -> Unit = {}
-    var onPermisoUbicacion: () -> Unit = {}
-    val mostrarMiniatura = mutableStateOf(false)
+class AppCameraVM : ViewModel() {//esto es el viewmodel para la camara
+    val pantallaPrincipal = mutableStateOf(Pantalla.CapturaFoto)//aca se pone la pantalla principal
+    val ubicacionFoto = mutableStateOf<Location?>(null)//esto es para la ubicacion
+    var onPermisoCamara: () -> Unit = {}//esto es para la camara
+    var onPermisoUbicacion: () -> Unit = {}//esto es para la ubicacion
+    val mostrarMiniatura = mutableStateOf(false)//esto es para la camara
 }
 
-class FormularioVM : ViewModel() {
-    val nombre = mutableStateOf("")
+class FormularioVM : ViewModel() {//esto es el viewmodel para el formulario
+    val nombre = mutableStateOf("")//con esto se crea el campo nombre
     val fotos = mutableStateListOf<Uri>() // Cambio a lista de Uri
 }
 
-fun nombreSegunFecha(): String = LocalDateTime.now()
+fun nombreSegunFecha(): String = LocalDateTime.now()// esta funcion es para ponerle el nombre a la foto
     .toString()
     .replace(Regex("[T:.-]"), "")
     .substring(0, 14)
 
-fun archivoPrivado(contexto: Context): File = File(
+fun archivoPrivado(contexto: Context): File = File(//esta funcion es para crear el archivo de la foto
     contexto.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
     "${nombreSegunFecha()}.jpg"
 )
 
-fun imagenUriToBitmap(uri: Uri, contexto: Context): Bitmap =
+fun imagenUriToBitmap(uri: Uri, contexto: Context): Bitmap =//esta funcion es para convertir la foto en bitmap
     BitmapFactory.decodeStream(contexto.contentResolver.openInputStream(uri))
 
 class MainActivity : ComponentActivity() {
